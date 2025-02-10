@@ -1,6 +1,7 @@
 package com.shujaat.blogs.services.implementations;
 
 import com.shujaat.blogs.entities.Post;
+import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.IPostService;
@@ -32,6 +33,12 @@ public class PostService  implements IPostService {
     public List<PostDto> getAllPosts() {
         List<Post> posts = postsRepository.findAll();
         return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto getPostById(long id) {
+        Post post = postsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDto(post);
     }
 
     private PostDto mapToDto(Post createdPost)
