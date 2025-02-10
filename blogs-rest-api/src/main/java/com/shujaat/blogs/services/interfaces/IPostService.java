@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IPostService {
     PostDto createPost(PostDto post);
-    PostResponse getAllPosts(int pageNo, int pageSize);
+    PostResponse getAllPosts(int pageNo, int pageSize, String sortBy);
     PostDto getPostById(long id);
     PostDto updatePost(PostDto post, long id);
     void deletePost(long id);
