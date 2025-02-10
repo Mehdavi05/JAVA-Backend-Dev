@@ -7,6 +7,10 @@ import com.shujaat.blogs.services.interfaces.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PostService  implements IPostService {
     private PostsRepository postsRepository;
@@ -18,20 +22,35 @@ public class PostService  implements IPostService {
 
     @Override
     public PostDto createPost(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
-
+        Post post = mapToEntity(postDto);
         Post createdPost = postsRepository.save(post);
+        PostDto postRes = mapToDto(createdPost);
+        return postRes;
+    }
 
+    @Override
+    public List<PostDto> getAllPosts() {
+        List<Post> posts = postsRepository.findAll();
+        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    }
+
+    private PostDto mapToDto(Post createdPost)
+    {
         PostDto postResponse = new PostDto();
         postResponse.setId(createdPost.getId());
         postResponse.setTitle(createdPost.getTitle());
         postResponse.setDescription(createdPost.getDescription());
         postResponse.setContent(createdPost.getContent());
 
+        return  postResponse;
+    }
 
-        return postResponse;
+    private  Post mapToEntity(PostDto postDto) {
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+
+        return post;
     }
 }
