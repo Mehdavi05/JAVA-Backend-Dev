@@ -1,6 +1,7 @@
 package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.PostDto;
+import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,11 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts(
-            @RequestParam(name = "pageNo", defaultValue = "-1", required = false) int pageNo,
+    public ResponseEntity<PostResponse> getAllPosts(
+            @RequestParam(name = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize){
-        List<PostDto> dtos = postService.getAllPosts(pageNo, pageSize);
-        return new ResponseEntity<>(dtos, HttpStatus.OK);
+        PostResponse postResponse = postService.getAllPosts(pageNo, pageSize);
+        return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

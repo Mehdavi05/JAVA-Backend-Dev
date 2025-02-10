@@ -3,6 +3,7 @@ package com.shujaat.blogs.services.implementations;
 import com.shujaat.blogs.entities.Post;
 import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.PostDto;
+import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +34,24 @@ public class PostService  implements IPostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
-        List<Post> postsList = new ArrayList<Post>();
-        if(pageNo >= 0){
-            Pageable pageable = PageRequest.of(pageNo, pageSize);
-            Page<Post> posts = postsRepository.findAll(pageable);
-            //Get content for Page object
-           postsList = posts.getContent();
-        }
-        else
-        {
-            postsList = postsRepository.findAll();
-        }
+    public PostResponse getAllPosts(int pageNo, int pageSize) {
 
-        return postsList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Post> posts = postsRepository.findAll(pageable);
+        //Get content for Page object
+        List<Post> postsList = posts.getContent();
+
+        List<PostDto> content = postsList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
     }
 
     @Override
