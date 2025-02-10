@@ -2,6 +2,9 @@ package com.shujaat.blogs.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "posts", uniqueConstraints= {@UniqueConstraint(columnNames= {"title"})})
 public class Post {
@@ -19,6 +22,9 @@ public class Post {
 	
 	@Column(name = "content", nullable = false)
 	private String content;
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Comment> comments = new HashSet<>();
 
 	public Post() {
 
@@ -61,5 +67,13 @@ public class Post {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 }
