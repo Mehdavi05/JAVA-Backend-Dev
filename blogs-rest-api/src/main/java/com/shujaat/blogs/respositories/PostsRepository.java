@@ -1,5 +1,9 @@
 package com.shujaat.blogs.respositories;
 
-public class PostsRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.shujaat.blogs.entities.Post;
+
+public interface PostsRepository extends JpaRepository<Post, Long> {
 
 }
