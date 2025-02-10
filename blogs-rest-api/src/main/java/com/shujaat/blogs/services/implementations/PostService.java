@@ -6,6 +6,9 @@ import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,9 +33,20 @@ public class PostService  implements IPostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postsRepository.findAll();
-        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+        List<Post> postsList = new ArrayList<Post>();
+        if(pageNo >= 0){
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            Page<Post> posts = postsRepository.findAll(pageable);
+            //Get content for Page object
+           postsList = posts.getContent();
+        }
+        else
+        {
+            postsList = postsRepository.findAll();
+        }
+
+        return postsList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
     }
 
     @Override

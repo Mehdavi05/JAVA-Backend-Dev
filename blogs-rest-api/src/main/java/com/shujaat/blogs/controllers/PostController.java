@@ -2,7 +2,7 @@ package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.services.interfaces.IPostService;
-import org.springframework.aop.PointcutAdvisor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,10 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts(){
-        List<PostDto> dtos = postService.getAllPosts();
+    public ResponseEntity<List<PostDto>> getAllPosts(
+            @RequestParam(name = "pageNo", defaultValue = "-1", required = false) int pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0", required = false) int pageSize){
+        List<PostDto> dtos = postService.getAllPosts(pageNo, pageSize);
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
