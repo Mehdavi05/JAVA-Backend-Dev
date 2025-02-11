@@ -6,6 +6,7 @@ import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.IPostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class PostService  implements IPostService {
     private PostsRepository postsRepository;
+    private ModelMapper modelMapper;
 
     @Autowired //This annotation can be removed if the class is having only one constructor
-    public PostService(PostsRepository postsRepository) {
+    public PostService(PostsRepository postsRepository, ModelMapper modelMapper) {
         this.postsRepository = postsRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -86,21 +89,12 @@ public class PostService  implements IPostService {
 
     private PostDto mapToDto(Post createdPost)
     {
-        PostDto postResponse = new PostDto();
-        postResponse.setId(createdPost.getId());
-        postResponse.setTitle(createdPost.getTitle());
-        postResponse.setDescription(createdPost.getDescription());
-        postResponse.setContent(createdPost.getContent());
-
+        PostDto postResponse = modelMapper.map(createdPost, PostDto.class);
         return  postResponse;
     }
 
     private  Post mapToEntity(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
-
+        Post post = modelMapper.map(postDto, Post.class);
         return post;
     }
 }

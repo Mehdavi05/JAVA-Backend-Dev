@@ -9,6 +9,7 @@ import com.shujaat.blogs.payloads.CommentResponse;
 import com.shujaat.blogs.respositories.CommentRepository;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.ICommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,11 +25,13 @@ import java.util.stream.Collectors;
 public class CommentService implements ICommentService {
     private CommentRepository commentRepository;
     private PostsRepository postsRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, PostsRepository postsRepository) {
+    public CommentService(CommentRepository commentRepository, PostsRepository postsRepository, ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
         this.postsRepository = postsRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -119,24 +122,12 @@ public class CommentService implements ICommentService {
     }
 
     private CommentDto mapToDto(Comment comment){
-        CommentDto commentDto = new CommentDto();
-
-        commentDto.setId(comment.getId());
-        commentDto.setName(comment.getName());
-        commentDto.setEmail(comment.getEmail());
-        commentDto.setBody(comment.getBody());
-
+        CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
         return commentDto;
     }
 
     private Comment mapToEntity(CommentDto commentDto){
-        Comment comment = new Comment();
-
-        comment.setId(commentDto.getId());
-        comment.setName(commentDto.getName());
-        comment.setEmail(commentDto.getEmail());
-        comment.setBody(commentDto.getBody());
-
+        Comment comment = modelMapper.map(commentDto, Comment.class);
         return comment;
     }
 }
