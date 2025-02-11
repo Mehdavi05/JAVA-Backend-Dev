@@ -6,8 +6,6 @@ import com.shujaat.blogs.exceptions.CommentAPIException;
 import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.CommentDto;
 import com.shujaat.blogs.payloads.CommentResponse;
-import com.shujaat.blogs.payloads.PostDto;
-import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.respositories.CommentRepository;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.ICommentService;
@@ -86,6 +84,25 @@ public class CommentService implements ICommentService {
         }
 
         return mapToDto(comment);
+    }
+
+    @Override
+    public CommentDto updateComment(long postId, long commentId, CommentDto commentDto) {
+        Post post = postsRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if(comment.getPost().getId() != post.getId()){
+            throw new CommentAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
+        }
+
+        comment.setName(commentDto.getName());
+        comment.setEmail(commentDto.getEmail());
+        comment.setBody(commentDto.getBody());
+
+        Comment updatedComment = commentRepository.save(comment);
+
+        return mapToDto(updatedComment);
     }
 
     private CommentDto mapToDto(Comment comment){
