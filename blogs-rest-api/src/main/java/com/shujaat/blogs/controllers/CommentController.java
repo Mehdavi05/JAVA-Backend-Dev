@@ -19,21 +19,30 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("{id}/comment")
-    public ResponseEntity<CommentDto> createComment(@PathVariable(name = "id") long postId, @RequestBody CommentDto commentDto){
+    @PostMapping("{postId}/comment")
+    public ResponseEntity<CommentDto> createComment(@PathVariable(name = "postId") long postId, @RequestBody CommentDto commentDto){
         CommentDto commentResponse = commentService.createComment(postId, commentDto);
 
         return new ResponseEntity<>(commentResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}/comment")
-    public ResponseEntity<CommentResponse> getAllPosts(
-            @PathVariable(name = "id") long postId,
+    @GetMapping("{postId}/comment")
+    public ResponseEntity<CommentResponse> getAllComments(
+            @PathVariable(name = "postId") long postId,
             @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(name = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(name = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir){
         CommentResponse commentResponse = commentService.getAllComments(postId, pageNo, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(commentResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("{postId}/comment/{id}")
+    public ResponseEntity<CommentDto> getComment(
+            @PathVariable(name = "postId") long postId,
+            @PathVariable(name = "id") long commentId) {
+        CommentDto comment = commentService.getCommentById(postId, commentId);
+
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 }

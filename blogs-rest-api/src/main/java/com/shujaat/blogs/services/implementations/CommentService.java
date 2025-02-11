@@ -2,6 +2,7 @@ package com.shujaat.blogs.services.implementations;
 
 import com.shujaat.blogs.entities.Comment;
 import com.shujaat.blogs.entities.Post;
+import com.shujaat.blogs.exceptions.CommentAPIException;
 import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.CommentDto;
 import com.shujaat.blogs.payloads.CommentResponse;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,6 +73,19 @@ public class CommentService implements ICommentService {
         commentResponse.setLast(comments.isLast());
 
         return commentResponse;
+    }
+
+    @Override
+    public CommentDto getCommentById(long postId, long commentId) {
+        Post post = postsRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if(comment.getPost().getId() != post.getId()){
+            throw new CommentAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
+        }
+
+        return mapToDto(comment);
     }
 
     private CommentDto mapToDto(Comment comment){
