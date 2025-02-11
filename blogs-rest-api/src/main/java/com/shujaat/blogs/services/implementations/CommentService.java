@@ -105,6 +105,19 @@ public class CommentService implements ICommentService {
         return mapToDto(updatedComment);
     }
 
+    @Override
+    public void deleteComment(long postId, long commentId) {
+        Post post = postsRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if(comment.getPost().getId() != post.getId()){
+            throw new CommentAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
+        }
+
+        commentRepository.delete(comment);
+    }
+
     private CommentDto mapToDto(Comment comment){
         CommentDto commentDto = new CommentDto();
 
