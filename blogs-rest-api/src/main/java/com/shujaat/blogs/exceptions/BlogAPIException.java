@@ -2,11 +2,11 @@ package com.shujaat.blogs.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class CommentAPIException extends RuntimeException {
+public class BlogAPIException extends RuntimeException {
     private HttpStatus status;
     private String message;
 
-    public CommentAPIException(HttpStatus status, String message) {
+    public BlogAPIException(HttpStatus status, String message) {
         super(String.format("Request failed with status: %s and message: '%s'",status, message));
         this.status = status;
         this.message = message;

@@ -2,7 +2,6 @@ package com.shujaat.blogs.exceptions;
 
 import com.shujaat.blogs.payloads.ErrorDetails;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +19,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CommentAPIException.class)
-    public ResponseEntity<ErrorDetails> handleCommentAPIException(CommentAPIException exception, WebRequest webRequest){
+    @ExceptionHandler(BlogAPIException.class)
+    public ResponseEntity<ErrorDetails> handleCommentAPIException(BlogAPIException exception, WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);

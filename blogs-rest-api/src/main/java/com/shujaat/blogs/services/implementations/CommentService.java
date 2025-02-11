@@ -2,7 +2,7 @@ package com.shujaat.blogs.services.implementations;
 
 import com.shujaat.blogs.entities.Comment;
 import com.shujaat.blogs.entities.Post;
-import com.shujaat.blogs.exceptions.CommentAPIException;
+import com.shujaat.blogs.exceptions.BlogAPIException;
 import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.CommentDto;
 import com.shujaat.blogs.payloads.CommentResponse;
@@ -83,7 +83,7 @@ public class CommentService implements ICommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 
         if(comment.getPost().getId() != post.getId()){
-            throw new CommentAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
         }
 
         return mapToDto(comment);
@@ -96,7 +96,7 @@ public class CommentService implements ICommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 
         if(comment.getPost().getId() != post.getId()){
-            throw new CommentAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
         }
 
         comment.setName(commentDto.getName());
@@ -115,7 +115,7 @@ public class CommentService implements ICommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 
         if(comment.getPost().getId() != post.getId()){
-            throw new CommentAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, String.format("Comment with provided id: %s doesn't belong to the post with id: %s", commentId, postId));
         }
 
         commentRepository.delete(comment);
