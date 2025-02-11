@@ -1,10 +1,13 @@
 package com.shujaat.blogs.payloads;
 
+import java.util.Set;
+
 public class PostDto {
     private long id;
     private String title;
     private String description;
     private String content;
+    private Set<CommentDto> comments;
 
     public long getId() {
         return id;
@@ -36,5 +39,13 @@ public class PostDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Set<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<CommentDto> comments) {
+        this.comments = comments;
     }
 }
