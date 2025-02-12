@@ -99,6 +99,17 @@ public class PostService  implements IPostService {
         postsRepository.delete(post);
     }
 
+    @Override
+    public List<PostDto> getPostsByCategory(long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
+
+        List<Post> posts = postsRepository.findByCategoryId(categoryId);
+
+        return posts.stream().map((post) -> mapToDto(post))
+                .collect(Collectors.toList());
+    }
+
     private PostDto mapToDto(Post createdPost)
     {
         PostDto postResponse = modelMapper.map(createdPost, PostDto.class);
