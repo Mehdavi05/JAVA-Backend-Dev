@@ -19,6 +19,8 @@ public class PostDto {
     @NotEmpty
     private String content;
 
+    private long categoryId;
+
     public PostDto() {
     }
 
@@ -70,5 +72,13 @@ public class PostDto {
 
     public void setComments(Set<CommentDto> comments) {
         this.comments = comments;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 }

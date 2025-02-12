@@ -1,9 +1,11 @@
 package com.shujaat.blogs.services.implementations;
 
+import com.shujaat.blogs.entities.Category;
 import com.shujaat.blogs.entities.Post;
 import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.payloads.PostResponse;
+import com.shujaat.blogs.respositories.CategoryRepository;
 import com.shujaat.blogs.respositories.PostsRepository;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import org.modelmapper.ModelMapper;
@@ -22,17 +24,23 @@ import java.util.stream.Collectors;
 public class PostService  implements IPostService {
     private PostsRepository postsRepository;
     private ModelMapper modelMapper;
+    private CategoryRepository categoryRepository;
 
     @Autowired //This annotation can be removed if the class is having only one constructor
-    public PostService(PostsRepository postsRepository, ModelMapper modelMapper) {
+    public PostService(PostsRepository postsRepository, ModelMapper modelMapper, CategoryRepository categoryRepository) {
         this.postsRepository = postsRepository;
         this.modelMapper = modelMapper;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public PostDto createPost(PostDto postDto) {
+        Category category = categoryRepository.findById(postDto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
         Post post = mapToEntity(postDto);
+        post.setCategory(category);
         Post createdPost = postsRepository.save(post);
+
         PostDto postRes = mapToDto(createdPost);
         return postRes;
     }
