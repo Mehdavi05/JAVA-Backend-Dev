@@ -1,6 +1,7 @@
 package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.LoginDto;
+import com.shujaat.blogs.payloads.RegisterUserDto;
 import com.shujaat.blogs.services.implementations.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,4 +26,11 @@ public class AuthController {
         String response = authService.login(loginDto);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping(value = {"/register", "/signup"})
+    public ResponseEntity<String> register(@RequestBody RegisterUserDto registerUserDto) {
+        String response = authService.register(registerUserDto);
+        return ResponseEntity.ok(response);
+    }
+
 }
