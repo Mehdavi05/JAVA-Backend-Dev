@@ -7,6 +7,7 @@ import com.shujaat.blogs.payloads.LoginDto;
 import com.shujaat.blogs.payloads.RegisterUserDto;
 import com.shujaat.blogs.respositories.RoleRepository;
 import com.shujaat.blogs.respositories.UserRepository;
+import com.shujaat.blogs.security.JwtTokenProvider;
 import com.shujaat.blogs.services.interfaces.IAuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,13 +28,17 @@ public class AuthService implements IAuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository,
-                       RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+                       RoleRepository roleRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -45,7 +50,9 @@ public class AuthService implements IAuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User logged-in successfully!.";
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return token;
     }
 
     @Override
