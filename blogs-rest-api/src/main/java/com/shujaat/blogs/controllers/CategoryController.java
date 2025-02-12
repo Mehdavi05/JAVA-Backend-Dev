@@ -2,9 +2,11 @@ package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.CategoryDto;
 import com.shujaat.blogs.payloads.CategoryResponse;
+import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.services.implementations.CategoryService;
 import com.shujaat.blogs.services.interfaces.ICategoryService;
 import com.shujaat.blogs.utils.AppConstants;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +43,12 @@ public class CategoryController {
             @RequestParam(name = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
         CategoryResponse response = categoryService.getAllCategories(pageNo, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDto> updatePost(@Valid @RequestBody CategoryDto categoryDto, @PathVariable long id){
+        CategoryDto dto = categoryService.updateCategory(categoryDto, id);
+        return  new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }
