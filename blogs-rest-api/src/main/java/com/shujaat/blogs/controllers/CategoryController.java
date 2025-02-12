@@ -6,6 +6,7 @@ import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.services.implementations.CategoryService;
 import com.shujaat.blogs.services.interfaces.ICategoryService;
 import com.shujaat.blogs.utils.AppConstants;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,9 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto){
@@ -47,6 +51,9 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable long id){
@@ -54,6 +61,9 @@ public class CategoryController {
         return  new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable long id){

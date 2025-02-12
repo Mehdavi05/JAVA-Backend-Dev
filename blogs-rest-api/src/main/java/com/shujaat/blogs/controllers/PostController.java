@@ -4,6 +4,7 @@ import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import com.shujaat.blogs.utils.AppConstants;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class PostController {
         this.postService = postService;
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto post){
@@ -45,6 +49,9 @@ public class PostController {
         return new ResponseEntity<>(dto, HttpStatus.FOUND);
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable long id){
@@ -52,6 +59,9 @@ public class PostController {
         return  new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable long id){

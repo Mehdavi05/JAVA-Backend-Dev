@@ -5,6 +5,7 @@ import com.shujaat.blogs.payloads.CommentResponse;
 import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.services.interfaces.ICommentService;
 import com.shujaat.blogs.utils.AppConstants;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,6 +22,9 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("{postId}/comment")
     public ResponseEntity<CommentDto> createComment(@PathVariable(name = "postId") long postId, @Valid @RequestBody CommentDto commentDto){
@@ -49,6 +53,9 @@ public class CommentController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{postId}/comment/{id}")
     public ResponseEntity<CommentDto> updateComment(
@@ -60,6 +67,9 @@ public class CommentController {
         return  new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{postId}/comment/{id}")
     public ResponseEntity<String> deleteComment(
