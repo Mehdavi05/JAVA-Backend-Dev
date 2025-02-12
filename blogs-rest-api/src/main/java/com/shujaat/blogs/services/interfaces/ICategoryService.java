@@ -11,4 +11,6 @@ public interface ICategoryService {
     CategoryDto getCategory(long id);
     CategoryResponse getAllCategories(int pageNo, int pageSize, String sortBy, String sortDir);
     CategoryDto updateCategory(CategoryDto categoryDto, long id);
+    void deleteCategory(long id);
+
 }

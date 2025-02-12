@@ -1,13 +1,10 @@
 package com.shujaat.blogs.services.implementations;
 
 import com.shujaat.blogs.entities.Category;
-import com.shujaat.blogs.entities.Comment;
 import com.shujaat.blogs.entities.Post;
 import com.shujaat.blogs.exceptions.ResourceNotFoundException;
 import com.shujaat.blogs.payloads.CategoryDto;
 import com.shujaat.blogs.payloads.CategoryResponse;
-import com.shujaat.blogs.payloads.PostDto;
-import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.respositories.CategoryRepository;
 import com.shujaat.blogs.services.interfaces.ICategoryService;
 import org.modelmapper.ModelMapper;
@@ -82,5 +79,9 @@ public class CategoryService implements ICategoryService {
         return modelMapper.map(updatedCategory, CategoryDto.class);
     }
 
-
+    @Override
+    public void deleteCategory(long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+        categoryRepository.delete(category);
+    }
 }
