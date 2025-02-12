@@ -30,9 +30,7 @@ public class Post {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	public Post() {
-
-	}
+	public Post() {}
 
 	public Post(long id, String title, String description, String content) {
 		this.id = id;

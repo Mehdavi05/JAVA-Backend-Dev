@@ -14,6 +14,17 @@ public class Comment {
     private String email;
     private String body;
 
+    public Comment() {
+    }
+
+    public Comment(long id, String name, String email, String body, Post post) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.body = body;
+        this.post = post;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;

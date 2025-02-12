@@ -18,6 +18,18 @@ public class PostDto {
 
     @NotEmpty
     private String content;
+
+    public PostDto() {
+    }
+
+    public PostDto(long id, String title, String description, String content, Set<CommentDto> comments) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.content = content;
+        this.comments = comments;
+    }
+
     private Set<CommentDto> comments;
 
     public long getId() {

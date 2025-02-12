@@ -19,6 +19,16 @@ public class CommentDto {
    @Size(min = 10, message = "Body should be at-least 10 characters long")
     private String body;
 
+    public CommentDto() {
+    }
+
+    public CommentDto(long id, String name, String email, String body) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.body = body;
+    }
+
     public long getId() {
         return id;
     }
