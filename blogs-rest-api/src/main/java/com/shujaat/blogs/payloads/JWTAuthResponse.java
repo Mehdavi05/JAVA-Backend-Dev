@@ -1,13 +1,13 @@
 package com.shujaat.blogs.payloads;
 
-public class JwtAuthResponse {
+public class JWTAuthResponse {
     private String accessToken;
     private String tokenType = "Bearer";
 
-    public JwtAuthResponse() {
+    public JWTAuthResponse() {
     }
 
-    public JwtAuthResponse(String accessToken, String tokenType) {
+    public JWTAuthResponse(String accessToken, String tokenType) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
     }
