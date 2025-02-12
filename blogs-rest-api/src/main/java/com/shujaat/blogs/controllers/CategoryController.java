@@ -1,8 +1,10 @@
 package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.CategoryDto;
+import com.shujaat.blogs.payloads.CategoryResponse;
 import com.shujaat.blogs.services.implementations.CategoryService;
 import com.shujaat.blogs.services.interfaces.ICategoryService;
+import com.shujaat.blogs.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +32,14 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> getCategory(@PathVariable(name = "id") long id){
         CategoryDto fetchedCategory = categoryService.getCategory(id);
         return new ResponseEntity<>(fetchedCategory, HttpStatus.OK);
+    }
+    @GetMapping
+    public ResponseEntity<CategoryResponse> getCategories(
+            @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
+        CategoryResponse response = categoryService.getAllCategories(pageNo, pageSize, sortBy, sortDir);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
