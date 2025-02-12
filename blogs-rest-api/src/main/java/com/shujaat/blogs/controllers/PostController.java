@@ -4,7 +4,10 @@ import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import com.shujaat.blogs.utils.AppConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/posts")
+@Tag(
+        name = "CRUD REST APIs for POST Resource"
+)
 public class PostController {
     private IPostService postService;
 
@@ -23,6 +29,14 @@ public class PostController {
         this.postService = postService;
     }
 
+    @Operation(
+            summary = "Create Post REST API",
+            description = "This API is used to save post to the database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
