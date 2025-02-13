@@ -12,7 +12,7 @@ public class RegisterUserDto {
             description = "Register user username"
     )
     private String username;
-    
+
     @Schema(
             description = "Register user email id"
     )

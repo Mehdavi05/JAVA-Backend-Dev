@@ -1,6 +1,7 @@
 package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.PostDto;
+import com.shujaat.blogs.payloads.PostDtoV2;
 import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.services.interfaces.IPostService;
 import com.shujaat.blogs.utils.AppConstants;
@@ -14,10 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/posts")
 @Tag(
         name = "CRUD REST APIs for POST Resource"
 )
@@ -41,7 +42,7 @@ public class PostController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping("api/v1/posts")
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto post){
         PostDto postRes = postService.createPost(post);
         return new ResponseEntity<>(postRes, HttpStatus.CREATED);
@@ -55,7 +56,7 @@ public class PostController {
             responseCode = "200",
             description = "Http Status 200 OK"
     )
-    @GetMapping
+    @GetMapping("api/v1/posts")
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -73,10 +74,40 @@ public class PostController {
             responseCode = "200",
             description = "Http Status 200 OK"
     )
-    @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostBy(@PathVariable(name = "id") long id){
+    @GetMapping("api/v1/posts/{id}")
+    public ResponseEntity<PostDto> getPostByV1(@PathVariable(name = "id") long id){
         PostDto dto = postService.getPostById(id);
         return new ResponseEntity<>(dto, HttpStatus.FOUND);
+    }
+
+    @Operation(
+            summary = "Get POST(post id provided) REST API",
+            description = "This API is used to Get post from the database provided it's id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
+    @GetMapping("api/v2/posts/{id}")
+    public ResponseEntity<PostDtoV2> getPostByV2(@PathVariable(name = "id") long id){
+        PostDto dtoV1 = postService.getPostById(id);
+
+        PostDtoV2 dtoV2 = new PostDtoV2();
+        dtoV2.setId(dtoV1.getId());
+        dtoV2.setTitle(dtoV1.getTitle());
+        dtoV2.setDescription(dtoV1.getDescription());
+        dtoV2.setContent(dtoV1.getContent());
+        dtoV2.setComments(dtoV1.getComments());
+        dtoV2.setCategoryId(dtoV1.getCategoryId());
+
+        List<String> tags = new ArrayList<>();
+        tags.add("JAVA");
+        tags.add("Spring");
+        tags.add("Spring Boot");
+
+        dtoV2.setTags(tags);
+
+        return new ResponseEntity<>(dtoV2, HttpStatus.FOUND);
     }
 
     @Operation(
@@ -91,7 +122,7 @@ public class PostController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("api/v1/posts/{id}")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable long id){
         PostDto dto = postService.updatePost(postDto, id);
         return  new ResponseEntity<>(dto, HttpStatus.OK);
@@ -109,7 +140,7 @@ public class PostController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("api/v1/posts/{id}")
     public ResponseEntity<String> deletePost(@PathVariable long id){
         postService.deletePost(id);
         return new ResponseEntity<>("Post with the given id deleted successfully", HttpStatus.OK);
@@ -123,7 +154,7 @@ public class PostController {
             responseCode = "200",
             description = "Http Status 200 OK"
     )
-    @GetMapping("/category/{id}")
+    @GetMapping("api/v1/posts/category/{id}")
     public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable(name = "id") long categoryId) {
         List<PostDto> posts = postService.getPostsByCategory(categoryId);
         return new ResponseEntity<>(posts, HttpStatus.OK);
