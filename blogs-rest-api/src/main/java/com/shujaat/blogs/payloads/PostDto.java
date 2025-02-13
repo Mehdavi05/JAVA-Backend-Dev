@@ -1,13 +1,20 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
+@Schema(
+        description = "PostDto model information"
+)
 public class PostDto {
     private long id;
 
+    @Schema(
+            description = "Blog post title"
+    )
     @NotEmpty
     @Size(min = 2, message = "Post title should have at least 2 characters")
     private String title;
