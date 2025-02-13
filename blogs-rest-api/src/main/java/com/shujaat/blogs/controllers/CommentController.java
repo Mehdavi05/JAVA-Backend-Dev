@@ -72,8 +72,18 @@ public class CommentController {
             responseCode = "200",
             description = "Http Status 200 OK"
     )
-    @GetMapping("{postId}/comment/{id}")
-    public ResponseEntity<CommentDto> getComment(
+
+    @GetMapping(value = "{postId}/comment/{id}", headers = "X-API-Version=1")
+    public ResponseEntity<CommentDto> getCommentV1(
+            @PathVariable(name = "postId") long postId,
+            @PathVariable(name = "id") long commentId) {
+        CommentDto comment = commentService.getCommentById(postId, commentId);
+
+        return new ResponseEntity<>(comment, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{postId}/comment/{id}", headers = "X-API-Version=2")
+    public ResponseEntity<CommentDto> getCommentV2(
             @PathVariable(name = "postId") long postId,
             @PathVariable(name = "id") long commentId) {
         CommentDto comment = commentService.getCommentById(postId, commentId);
