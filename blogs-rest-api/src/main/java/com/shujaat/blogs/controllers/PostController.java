@@ -42,10 +42,45 @@ public class PostController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("api/v1/posts")
-    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto post){
+    @PostMapping(value = "api/posts", produces = "application/shu.javadev.v1+json")
+    public ResponseEntity<PostDto> createPostV1(@Valid @RequestBody PostDto post){
         PostDto postRes = postService.createPost(post);
         return new ResponseEntity<>(postRes, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "Create Post REST API",
+            description = "This API is used to save post to the database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
+
+    @SecurityRequirement(
+            name = "Bearer Token"
+    )
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "api/posts" , produces = "application/shu.javadev.v2+json")
+    public ResponseEntity<PostDtoV2> createPostV2(@Valid @RequestBody PostDto post){
+        PostDto dtoV1 = postService.createPost(post);
+
+        PostDtoV2 dtoV2 = new PostDtoV2();
+        dtoV2.setId(dtoV1.getId());
+        dtoV2.setTitle(dtoV1.getTitle());
+        dtoV2.setDescription(dtoV1.getDescription());
+        dtoV2.setContent(dtoV1.getContent());
+        dtoV2.setComments(dtoV1.getComments());
+        dtoV2.setCategoryId(dtoV1.getCategoryId());
+
+        List<String> tags = new ArrayList<>();
+        tags.add("JAVA");
+        tags.add("Spring");
+        tags.add("Spring Boot");
+
+        dtoV2.setTags(tags);
+
+        return new ResponseEntity<>(dtoV2, HttpStatus.CREATED);
     }
 
     @Operation(
