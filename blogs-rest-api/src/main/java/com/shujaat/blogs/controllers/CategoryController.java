@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/category")
 @Tag(
         name = "CRUD REST APIs for Category Resource"
 )
@@ -43,7 +42,7 @@ public class CategoryController {
     @SecurityRequirement(
             name = "Bearer Token"
     )
-    @PostMapping
+    @PostMapping("api/v1/category")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto){
         CategoryDto savedCategory = categoryService.addCategory(categoryDto);
@@ -59,14 +58,14 @@ public class CategoryController {
             description = "Http Status 201 OK"
     )
 
-    @GetMapping(value = "/{id}", params = "version=1")
+    @GetMapping("api/v1/category/{id}")
     public ResponseEntity<CategoryDto> getCategoryV1(@PathVariable(name = "id") long id){
         CategoryDto fetchedCategory = categoryService.getCategory(id);
         return new ResponseEntity<>(fetchedCategory, HttpStatus.OK);
     }
 
 
-    @GetMapping(value = "/{id}", params = "version=2")
+    @GetMapping("api/v2/category/{id}")
     public ResponseEntity<CategoryDtoV2> getCategoryV2(@PathVariable(name = "id") long id){
         CategoryDto fetchedCategory = categoryService.getCategory(id);
 
@@ -93,7 +92,7 @@ public class CategoryController {
             responseCode = "200",
             description = "Http Status 201 OK"
     )
-    @GetMapping
+    @GetMapping("api/v1/category")
     public ResponseEntity<CategoryResponse> getCategories(
             @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -115,7 +114,7 @@ public class CategoryController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("api/v1/category/{id}")
     public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable long id){
         CategoryDto dto = categoryService.updateCategory(categoryDto, id);
         return  new ResponseEntity<>(dto, HttpStatus.OK);
@@ -133,7 +132,7 @@ public class CategoryController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/category/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable long id){
         categoryService.deleteCategory(id);
         return new ResponseEntity<>("Category with the given id deleted successfully", HttpStatus.OK);

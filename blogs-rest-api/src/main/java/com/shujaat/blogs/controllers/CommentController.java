@@ -15,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/posts")
 @Tag(
         name = "CRUD REST APIs for Comment Resource"
 )
@@ -38,7 +37,7 @@ public class CommentController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("{postId}/comment")
+    @PostMapping("api/v1/posts/{postId}/comment")
     public ResponseEntity<CommentDto> createComment(@PathVariable(name = "postId") long postId, @Valid @RequestBody CommentDto commentDto){
         CommentDto commentResponse = commentService.createComment(postId, commentDto);
 
@@ -53,7 +52,7 @@ public class CommentController {
             responseCode = "200",
             description = "Http Status 200 OK"
     )
-    @GetMapping("{postId}/comment")
+    @GetMapping("api/v1/posts/{postId}/comment")
     public ResponseEntity<CommentResponse> getAllComments(
             @PathVariable(name = "postId") long postId,
             @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
@@ -73,7 +72,7 @@ public class CommentController {
             description = "Http Status 200 OK"
     )
 
-    @GetMapping(value = "{postId}/comment/{id}", headers = "X-API-Version=1")
+    @GetMapping("api/v1/posts/{postId}/comment/{id}")
     public ResponseEntity<CommentDto> getCommentV1(
             @PathVariable(name = "postId") long postId,
             @PathVariable(name = "id") long commentId) {
@@ -82,7 +81,7 @@ public class CommentController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-    @GetMapping(value = "{postId}/comment/{id}", headers = "X-API-Version=2")
+    @GetMapping("api/v2/posts/{postId}/comment/{id}")
     public ResponseEntity<CommentDto> getCommentV2(
             @PathVariable(name = "postId") long postId,
             @PathVariable(name = "id") long commentId) {
@@ -103,7 +102,7 @@ public class CommentController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("{postId}/comment/{id}")
+    @PutMapping("api/v1/posts/{postId}/comment/{id}")
     public ResponseEntity<CommentDto> updateComment(
             @PathVariable(name = "postId") long postId,
             @PathVariable(name = "id") long commentId,
@@ -125,7 +124,7 @@ public class CommentController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("{postId}/comment/{id}")
+    @DeleteMapping("api/v1/posts/{postId}/comment/{id}")
     public ResponseEntity<String> deleteComment(
             @PathVariable(name = "postId") long postId,
             @PathVariable(name = "id") long commentId){

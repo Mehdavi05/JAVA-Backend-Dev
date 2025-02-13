@@ -42,7 +42,7 @@ public class PostController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "api/posts", produces = "application/shu.javadev.v1+json")
+    @PostMapping("api/v1/posts")
     public ResponseEntity<PostDto> createPostV1(@Valid @RequestBody PostDto post){
         PostDto postRes = postService.createPost(post);
         return new ResponseEntity<>(postRes, HttpStatus.CREATED);
@@ -61,7 +61,7 @@ public class PostController {
             name = "Bearer Token"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "api/posts" , produces = "application/shu.javadev.v2+json")
+    @PostMapping("api/v2/posts")
     public ResponseEntity<PostDtoV2> createPostV2(@Valid @RequestBody PostDto post){
         PostDto dtoV1 = postService.createPost(post);
 
