@@ -1,9 +1,8 @@
 package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.CategoryDto;
+import com.shujaat.blogs.payloads.CategoryDtoV2;
 import com.shujaat.blogs.payloads.CategoryResponse;
-import com.shujaat.blogs.payloads.PostDto;
-import com.shujaat.blogs.services.implementations.CategoryService;
 import com.shujaat.blogs.services.interfaces.ICategoryService;
 import com.shujaat.blogs.utils.AppConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,10 +58,31 @@ public class CategoryController {
             responseCode = "200",
             description = "Http Status 201 OK"
     )
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> getCategory(@PathVariable(name = "id") long id){
+
+    @GetMapping(value = "/{id}", params = "version=1")
+    public ResponseEntity<CategoryDto> getCategoryV1(@PathVariable(name = "id") long id){
         CategoryDto fetchedCategory = categoryService.getCategory(id);
         return new ResponseEntity<>(fetchedCategory, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/{id}", params = "version=2")
+    public ResponseEntity<CategoryDtoV2> getCategoryV2(@PathVariable(name = "id") long id){
+        CategoryDto fetchedCategory = categoryService.getCategory(id);
+
+        CategoryDtoV2 categoryDtoV2 = new CategoryDtoV2();
+        categoryDtoV2.setId((fetchedCategory.getId()));
+        categoryDtoV2.setName(fetchedCategory.getName());
+        categoryDtoV2.setDescription(fetchedCategory.getDescription());
+
+        List<String> tags = new ArrayList<>();
+        tags.add("Awesome");
+        tags.add("Splendid");
+        tags.add("Too Good");
+
+        categoryDtoV2.setTags(tags);
+
+        return new ResponseEntity<>(categoryDtoV2, HttpStatus.OK);
     }
 
     @Operation(
