@@ -1,9 +1,26 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class RegisterUserDto {
+    @Schema(
+            description = "Register user name"
+    )
     private String name;
+
+    @Schema(
+            description = "Register user username"
+    )
     private String username;
+    
+    @Schema(
+            description = "Register user email id"
+    )
     private String email;
+
+    @Schema(
+            description = "Register user password"
+    )
     private String password;
 
     public RegisterUserDto() {

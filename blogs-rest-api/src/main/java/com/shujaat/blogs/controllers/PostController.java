@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +36,7 @@ public class PostController {
             responseCode = "201",
             description = "Http Status 201 CREATED"
     )
+
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -47,6 +47,14 @@ public class PostController {
         return new ResponseEntity<>(postRes, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Get All Posts REST API",
+            description = "This API is used to fetch all Posts from the database with pagination Applied as pageNo, pageSize, sortBy, sortDir"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @GetMapping
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
@@ -57,12 +65,28 @@ public class PostController {
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Get POST(post id provided) REST API",
+            description = "This API is used to Get post from the database provided it's id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<PostDto> getPostBy(@PathVariable(name = "id") long id){
         PostDto dto = postService.getPostById(id);
         return new ResponseEntity<>(dto, HttpStatus.FOUND);
     }
 
+    @Operation(
+            summary = "Update Post REST API",
+            description = "This API is used to update post to the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -73,6 +97,14 @@ public class PostController {
         return  new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Delete Post REST API",
+            description = "This API is used to delete post from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -83,6 +115,14 @@ public class PostController {
         return new ResponseEntity<>("Post with the given id deleted successfully", HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Get Posts for the Category Id REST API",
+            description = "This API is used to get posts from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @GetMapping("/category/{id}")
     public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable(name = "id") long categoryId) {
         List<PostDto> posts = postService.getPostsByCategory(categoryId);

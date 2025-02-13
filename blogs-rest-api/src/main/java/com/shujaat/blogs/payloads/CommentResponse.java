@@ -1,14 +1,38 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 public class CommentResponse {
+    @Schema(
+            description = "Comment response content"
+    )
     private List<CommentDto> content;
 
+    @Schema(
+            description = "Comment response page number"
+    )
     private int pageNo;
+
+    @Schema(
+            description = "Comment response page size"
+    )
     private int pageSize;
+
+    @Schema(
+            description = "Comment response total elements"
+    )
     private long totalElements;
+
+    @Schema(
+            description = "Comment response total pages"
+    )
     private int totalPages;
+
+    @Schema(
+            description = "Comment response is last page"
+    )
     private boolean last;
 
     public CommentResponse() {

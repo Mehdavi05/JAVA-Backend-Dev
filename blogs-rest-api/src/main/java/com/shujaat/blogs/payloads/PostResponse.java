@@ -1,13 +1,38 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 public class PostResponse {
+    @Schema(
+            description = "Post Response content"
+    )
     private List<PostDto> content;
+
+    @Schema(
+            description = "Post Response page number"
+    )
     private int pageNo;
+
+    @Schema(
+            description = "Post Response page size"
+    )
     private int pageSize;
+
+    @Schema(
+            description = "Post Response total elements"
+    )
     private long totalElements;
+
+    @Schema(
+            description = "Post Response total pages"
+    )
     private int totalPages;
+
+    @Schema(
+            description = "Post Response is last page"
+    )
     private boolean last;
 
     public PostResponse() {

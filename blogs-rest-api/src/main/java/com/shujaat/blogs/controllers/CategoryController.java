@@ -6,7 +6,10 @@ import com.shujaat.blogs.payloads.PostDto;
 import com.shujaat.blogs.services.implementations.CategoryService;
 import com.shujaat.blogs.services.interfaces.ICategoryService;
 import com.shujaat.blogs.utils.AppConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/category")
+@Tag(
+        name = "CRUD REST APIs for Category Resource"
+)
 public class CategoryController {
     private ICategoryService categoryService;
 
@@ -26,6 +32,14 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @Operation(
+            summary = "Create Category REST API",
+            description = "This API is used to create category in the database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -36,11 +50,28 @@ public class CategoryController {
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "GET Category REST API",
+            description = "This API is used to get category from the database with the given id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 201 OK"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategory(@PathVariable(name = "id") long id){
         CategoryDto fetchedCategory = categoryService.getCategory(id);
         return new ResponseEntity<>(fetchedCategory, HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "GET Categories REST API",
+            description = "This API is used to get categories from the database with pagination applied"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 201 OK"
+    )
     @GetMapping
     public ResponseEntity<CategoryResponse> getCategories(
             @RequestParam(name = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
@@ -51,6 +82,14 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "UPDATE Category REST API",
+            description = "This API is used to update category in the database with the given id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -61,6 +100,14 @@ public class CategoryController {
         return  new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "DELETE Category REST API",
+            description = "This API is used to update category in the database with the given id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )

@@ -1,10 +1,24 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Date;
 
 public class ErrorDetails {
+
+    @Schema(
+            description = "Error details timestamp"
+    )
     private Date timestamp;
+
+    @Schema(
+            description = "Error details message"
+    )
     private String message;
+
+    @Schema(
+            description = "Error details"
+    )
     private String details;
 
     public ErrorDetails() {

@@ -19,14 +19,28 @@ public class PostDto {
     @Size(min = 2, message = "Post title should have at least 2 characters")
     private String title;
 
+    @Schema(
+            description = "Blog post description"
+    )
     @NotEmpty
     @Size(min = 10, message = "Post description should have at least 10 characters")
     private String description;
 
+    @Schema(
+            description = "Blog post content"
+    )
     @NotEmpty
     private String content;
 
+    @Schema(
+            description = "Blog post category id"
+    )
     private long categoryId;
+
+    @Schema(
+            description = "Blog post post comments"
+    )
+    private Set<CommentDto> comments;
 
     public PostDto() {
     }
@@ -39,7 +53,7 @@ public class PostDto {
         this.comments = comments;
     }
 
-    private Set<CommentDto> comments;
+
 
     public long getId() {
         return id;

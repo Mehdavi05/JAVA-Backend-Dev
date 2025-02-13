@@ -1,8 +1,18 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class CategoryDto {
     private long id;
+
+    @Schema(
+            description = "Blog category name"
+    )
     private String name;
+
+    @Schema(
+            description = "Blog category description"
+    )
     private String description;
 
     public CategoryDto() {

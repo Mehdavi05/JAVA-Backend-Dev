@@ -1,13 +1,37 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 public class CategoryResponse {
+
+    @Schema(
+            description = "Category response content"
+    )
     private List<CategoryDto> content;
+
+    @Schema(
+            description = "Category response page number"
+    )
     private int pageNo;
+
+    @Schema(
+            description = "Category response page size"
+    )
     private int pageSize;
+
+    @Schema(
+            description = "Category response total elements"
+    )
     private long totalElements;
+    @Schema(
+            description = "Category response total pages"
+    )
     private int totalPages;
+    @Schema(
+            description = "Category response is last page"
+    )
     private boolean last;
 
     public CategoryResponse() {

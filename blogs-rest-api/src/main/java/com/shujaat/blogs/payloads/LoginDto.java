@@ -1,7 +1,16 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class LoginDto {
+    @Schema(
+            description = "Login username or email"
+    )
     private String usernameOrEmail;
+
+    @Schema(
+            description = "Login username password"
+    )
     private String password;
 
     public LoginDto() {

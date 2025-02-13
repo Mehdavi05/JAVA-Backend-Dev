@@ -1,7 +1,16 @@
 package com.shujaat.blogs.payloads;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class JWTAuthResponse {
+    @Schema(
+            description = "JWTAuthResponse access token"
+    )
     private String accessToken;
+
+    @Schema(
+            description = "JWTAuthResponse token type"
+    )
     private String tokenType = "Bearer";
 
     public JWTAuthResponse() {

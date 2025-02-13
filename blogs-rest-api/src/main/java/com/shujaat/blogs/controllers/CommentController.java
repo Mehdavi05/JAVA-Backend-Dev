@@ -2,19 +2,23 @@ package com.shujaat.blogs.controllers;
 
 import com.shujaat.blogs.payloads.CommentDto;
 import com.shujaat.blogs.payloads.CommentResponse;
-import com.shujaat.blogs.payloads.PostResponse;
 import com.shujaat.blogs.services.interfaces.ICommentService;
 import com.shujaat.blogs.utils.AppConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/posts")
+@Tag(
+        name = "CRUD REST APIs for Comment Resource"
+)
 public class CommentController {
     private ICommentService commentService;
 
@@ -22,6 +26,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @Operation(
+            summary = "Create Comment REST API",
+            description = "This API is used to save comment to the database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -33,6 +45,14 @@ public class CommentController {
         return new ResponseEntity<>(commentResponse, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Get Comments REST API",
+            description = "This API is used to get comments from the database with pagination and sorting applied"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @GetMapping("{postId}/comment")
     public ResponseEntity<CommentResponse> getAllComments(
             @PathVariable(name = "postId") long postId,
@@ -44,6 +64,14 @@ public class CommentController {
         return new ResponseEntity<>(commentResponse, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Get Comment for the provided id REST API",
+            description = "This API is used to get comments from the database with the given id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @GetMapping("{postId}/comment/{id}")
     public ResponseEntity<CommentDto> getComment(
             @PathVariable(name = "postId") long postId,
@@ -53,6 +81,14 @@ public class CommentController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Update Comment REST API",
+            description = "This API is used to update comment in the database with the given id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
@@ -67,6 +103,14 @@ public class CommentController {
         return  new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Delete Comment REST API",
+            description = "This API is used to delete comment from the database with the given id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 OK"
+    )
     @SecurityRequirement(
             name = "Bearer Token"
     )
