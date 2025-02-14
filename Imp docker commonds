@@ -1,0 +1,34 @@
+cd to the directory where you have your "Dockerfile"
+
+To Build Dcoker Image:
+   docker build -t springboot-docker-demo:0.1.RELEASE . 
+
+To check docker images:
+    docker images  
+
+To run a docker image:
+     docker run -p 8080:8080 springboot-docker-demo 
+                   or
+     docker run -p 8081:8080 springboot-docker-demo 
+     Note: Here 8081 is the host port and 8080 is the container port
+
+To check the docker containers running:
+    docker ps 
+
+To start a docker container in a detached mode:
+     docker run -p 8081:8080 -d springboot-docker-demo
+
+To see the logs on the docker container running in detached mode:
+     docker logs -f 7d5f    (Note: Here 7d5f are the first four characters of the docker container running)
+
+To stop the docker container running in detached mode:
+     docker stop 7d5f 
+
+Docker login:
+     docker login  
+
+To link a docker image with a repository on docker hub:
+      docker tag springboot-docker-demo mehdavi/springboot-docker-demo:0.1.RELEASE
+      docker push mehdavi/springboot-docker-demo:0.1.RELEASE 
+      docker pull mehdavi/springboot-docker-demo:0.1.RELEASE   
+      docker run -p 8080:8080 mehdavi/springboot-docker-demo:0.1.RELEASE 
