@@ -50,3 +50,18 @@ To check the logs if container is running in detached (-d) mode:
 To access mysql in the docker container:
      docker exec -it sqldb bash
      mysql -u root -p
+
+To forcefully remove a docker image:
+     docker rmi -f <provide docker container id here>
+
+
+Docker Compose Commonds(Provided that you are in the project directory):
+   To pull the image from the docker hub and star it in a docker container:
+      docker-compose up
+   To pull the image from the docker hub and start it in a docker container detached:
+      docker-compose -d
+      docker-compose up --build  (Note: To bring up two containers. Spring boot needs to be prepared locally)
+   To check the logs:
+      docker logs -f <docker container name>
+   To stop all docker containers running in the background:
+     docker-compose down

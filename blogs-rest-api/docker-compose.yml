@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  sqlserver:
+    container_name: sqldb
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: MyStrongPass123
+      MSSQL_DATABASE: employeedb
+    networks:
+      - springboot-mysql-net
+    ports:
+      - "1433:1433"
+
+  springboot-restful-webservices:
+    container_name: springboot-restfult-webservices
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8088:8088"
+    depends_on:
+      - sqlserver
+    networks:
+     - springboot-mysql-net
+    restart: on-failure
+
+networks:
+  springboot-mysql-net:
