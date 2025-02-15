@@ -32,3 +32,21 @@ To link a docker image with a repository on docker hub:
       docker push mehdavi/springboot-docker-demo:0.1.RELEASE 
       docker pull mehdavi/springboot-docker-demo:0.1.RELEASE   
       docker run -p 8080:8080 mehdavi/springboot-docker-demo:0.1.RELEASE 
+
+To create a docker network to bridge containers in docker:
+     docker network create springboot-mysql-net
+
+To check the list of all docker networks:
+     docker network ls
+
+To run a docker image in a docker container in a network:
+     docker run --network springboot-mysql-net --name sqldb -e "ACCEPT_EULA=1" -e "MSSQL_SA_PASSWORD=MyStrongPass123" -e "MSSQL_PID=Developer" -e "MSSQL_USER=SA" -e "MYSQL_DATABASE"=employeedb -p 1434:1434 -d mcr.microsoft.com/azure-sql-edge
+To run another docker image in a container in the same network:
+     docker run --network springboot-mysql-net --name springboot-mysql-container -p 8088:8088 -d springboot-restful-webservices 
+     (docker run --network <Network Name> --name <Container Name> -p 8088:8088 -d <Image Name>)
+To check the logs if container is running in detached (-d) mode:
+     docker logs -f f80d 
+
+To access mysql in the docker container:
+     docker exec -it sqldb bash
+     mysql -u root -p
