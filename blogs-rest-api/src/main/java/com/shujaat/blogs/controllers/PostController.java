@@ -23,7 +23,7 @@ import java.util.List;
         name = "CRUD REST APIs for POST Resource"
 )
 public class PostController {
-    private IPostService postService;
+    private final IPostService postService;
 
     public PostController(IPostService postService) {
         this.postService = postService;

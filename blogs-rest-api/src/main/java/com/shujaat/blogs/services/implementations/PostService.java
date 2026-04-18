@@ -16,15 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class PostService  implements IPostService {
-    private PostsRepository postsRepository;
-    private ModelMapper modelMapper;
-    private CategoryRepository categoryRepository;
+    private final PostsRepository postsRepository;
+    private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
 
     @Autowired //This annotation can be removed if the class is having only one constructor
     public PostService(PostsRepository postsRepository, ModelMapper modelMapper, CategoryRepository categoryRepository) {
